@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 26, 2022 at 11:29 AM
+-- Generation Time: Jan 27, 2022 at 10:20 AM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 7.3.31
 
@@ -30,6 +30,17 @@ SET time_zone = "+00:00";
 CREATE TABLE `kasir` (
   `id_kasir` int(11) NOT NULL,
   `nama_kasir` varchar(30) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `meja`
+--
+
+CREATE TABLE `meja` (
+  `nomor_meja` int(11) NOT NULL,
+  `jumlah_kursi` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -67,7 +78,8 @@ CREATE TABLE `pembayaran` (
   `tanggal_pembayarn` date NOT NULL,
   `total_pembayaran` double NOT NULL,
   `total_pesanan` int(11) NOT NULL,
-  `nomor_metode` int(11) DEFAULT NULL
+  `nomor_metode` int(11) DEFAULT NULL,
+  `nomor_meja` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -97,6 +109,12 @@ ALTER TABLE `kasir`
   ADD PRIMARY KEY (`id_kasir`);
 
 --
+-- Indexes for table `meja`
+--
+ALTER TABLE `meja`
+  ADD PRIMARY KEY (`nomor_meja`);
+
+--
 -- Indexes for table `menu`
 --
 ALTER TABLE `menu`
@@ -113,7 +131,8 @@ ALTER TABLE `metode_pembayaran`
 --
 ALTER TABLE `pembayaran`
   ADD PRIMARY KEY (`id_pembayaran`),
-  ADD KEY `nomor_metode` (`nomor_metode`);
+  ADD KEY `nomor_metode` (`nomor_metode`),
+  ADD KEY `nomor_meja` (`nomor_meja`);
 
 --
 -- Indexes for table `pengguna`
@@ -130,6 +149,12 @@ ALTER TABLE `pengguna`
 --
 ALTER TABLE `kasir`
   MODIFY `id_kasir` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `meja`
+--
+ALTER TABLE `meja`
+  MODIFY `nomor_meja` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `menu`
@@ -163,7 +188,8 @@ ALTER TABLE `pengguna`
 -- Constraints for table `pembayaran`
 --
 ALTER TABLE `pembayaran`
-  ADD CONSTRAINT `pembayaran_ibfk_1` FOREIGN KEY (`nomor_metode`) REFERENCES `metode_pembayaran` (`nomor_metode`);
+  ADD CONSTRAINT `pembayaran_ibfk_1` FOREIGN KEY (`nomor_metode`) REFERENCES `metode_pembayaran` (`nomor_metode`),
+  ADD CONSTRAINT `pembayaran_ibfk_2` FOREIGN KEY (`nomor_meja`) REFERENCES `meja` (`nomor_meja`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
